@@ -3,4 +3,5 @@
 <%
 	// 리다이렉트
 	response.sendRedirect("login.do");
+	// 테스트
 %>
