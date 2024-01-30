@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+  <!-- dispay-name은 개발용이라 안고쳐줘도됨 -->
+  <display-name>springSample1</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+	  <servlet-name>dispatchServlet</servlet-name>
+	  <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	  <init-param>
+	  	<!-- WebApplicationContext 소속 -->
+	  	<param-name>contextConfigLocation</param-name>
+	  	<!-- 이 DI 파일을 읽어들여라 -->
+	  	<param-value>
+	  		/WEB-INF/spring/servlet-context.xml
+	  		<!-- 파일 업로드용 -->
+	  		/WEB-INF/spring/file-context.xml
+	  	</param-value>
+	  </init-param>
+	  <!-- 이 서블릿이 첫번째로 로딩할 것이다 -->
+	  <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+	  <servlet-name>dispatchServlet</servlet-name>
+	  <!-- <url-pattern>/</url-pattern> -->
+	  <!-- controller url 맵핑 패턴 -->
+	  <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Database 적용 -->
+  <context-param>
+  	<!-- RootApplicationContext -->
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>
+  		/WEB-INF/spring/applicationContext.xml
+  	</param-value>
+  </context-param>
+  
+  <!-- contextConfigLocation의 (경로)값을 읽어 RootApplicationContext와 WebApplicationContext를 생성하는 역할 -->
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- 한글설정, post method에서 한글깨져서 request.setcharacterencoding( utf-8 )해주는 역할-->
+  <!-- 필터는 프론트에서 백엔드로 데이터 들어올때 관여함 -->
+  <!-- Servlet 태그처럼 설정 키 밸류 -->
+  <filter>
+  <filter-name>encodingFilter</filter-name>
+  <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  <!-- 초기값 DI -->
+  <init-param>
+  	<param-name>encoding</param-name>
+  	<param-value>UTF-8</param-value>
+  </init-param>
+  <init-param>
+  	<param-name>forceEncoding</param-name>
+  	<param-value>true</param-value>
+  </init-param>
+  </filter>
+  
+  <filter-mapping>
+  <filter-name>encodingFilter</filter-name>
+  <!-- 값이 넘어오는 곳에서는 모두 필터링 해줘라 -->
+  <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	
+	<!-- spring (기본)설정 -->
+	<!-- spring MVC annotation(주석, 지시문)을 사용하기 위한 설정 -->
+	<!-- spring @어노테이션 사용을 위한 허가설정 -->
+	<context:annotation-config/>
+	
+	<!-- view(jsp, html) 파일들의 경로와 확장자명을 설정 -->
+	<bean id="viewResolve" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<!-- webapp 바로 아래가 아니라 /WEB-INF/views/에 두기위함 -->
+		<property name="prefix" value="/WEB-INF/views/"/>
+		<!-- controller에서 리턴할때 "hello"로주면 hello.jsp로 리턴하게끔 -->
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	<!-- 공통패키지, 보통 패키지 3단계 depth 안에 클래스넣음 -->
+	<context:component-scan base-package="ssg.com.a"/>
+	
+	<!--  for Ajax START -->
+	<!--  Ajax 사용허가, 없으면 ajax controller로 보내는건 되지만 controller로 부터 값을 리턴 못받음 error뜸-->
+	<mvc:annotation-driven/>
+	
+	<!-- spring에서 처리할 수 없는 요청은 tomcat에서 처리 -->
+	<mvc:default-servlet-handler/>  
+	<!-- for Ajax END -->
+</beans>
